@@ -1,4 +1,4 @@
-module jd-go-stock
+module mcp-go-stock
 
 go 1.24.0
 

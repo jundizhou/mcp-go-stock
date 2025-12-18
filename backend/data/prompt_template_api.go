@@ -1,9 +1,9 @@
 package data
 
 import (
-	"jd-go-stock/backend/db"
-	"jd-go-stock/backend/logger"
-	"jd-go-stock/backend/models"
+	"mcp-go-stock/backend/db"
+	"mcp-go-stock/backend/logger"
+	"mcp-go-stock/backend/models"
 )
 
 type PromptTemplateApi struct {

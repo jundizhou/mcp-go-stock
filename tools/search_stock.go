@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"jd-go-stock/backend/data"
-	"jd-go-stock/backend/db"
+	"mcp-go-stock/backend/data"
+	"mcp-go-stock/backend/db"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )

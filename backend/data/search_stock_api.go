@@ -3,9 +3,9 @@ package data
 import (
 	"encoding/json"
 	"fmt"
-	"jd-go-stock/backend/logger"
-	"jd-go-stock/backend/models"
-	"jd-go-stock/backend/util"
+	"mcp-go-stock/backend/logger"
+	"mcp-go-stock/backend/models"
+	"mcp-go-stock/backend/util"
 	"time"
 
 	"github.com/duke-git/lancet/v2/mathutil"

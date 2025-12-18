@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"jd-go-stock/backend/data"
+	"mcp-go-stock/backend/data"
 
 	"github.com/duke-git/lancet/v2/convertor"
 	"github.com/duke-git/lancet/v2/random"

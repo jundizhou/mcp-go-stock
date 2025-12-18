@@ -3,8 +3,8 @@ package data
 import (
 	"encoding/json"
 	"errors"
-	"jd-go-stock/backend/db"
-	"jd-go-stock/backend/logger"
+	"mcp-go-stock/backend/db"
+	"mcp-go-stock/backend/logger"
 	"time"
 
 	"github.com/samber/lo"

@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"jd-go-stock/backend/data"
-	"jd-go-stock/backend/util"
+	"mcp-go-stock/backend/data"
+	"mcp-go-stock/backend/util"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )

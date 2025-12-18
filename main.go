@@ -8,15 +8,15 @@ import (
 	"net/http"
 	"os"
 
-	"jd-go-stock/backend/db"
-	"jd-go-stock/tools"
+	"mcp-go-stock/backend/db"
+	"mcp-go-stock/tools"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
 
 const (
-	ServerName    = "jd-go-stock"
+	ServerName    = "mcp-go-stock"
 	ServerVersion = "1.0.0"
 )
 

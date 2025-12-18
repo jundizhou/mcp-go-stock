@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"jd-go-stock/backend/db"
-	"jd-go-stock/tools"
+	"mcp-go-stock/backend/db"
+	"mcp-go-stock/tools"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )

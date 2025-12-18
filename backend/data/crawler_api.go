@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 	"github.com/chromedp/chromedp"
-	"jd-go-stock/backend/logger"
+	"mcp-go-stock/backend/logger"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package data
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"jd-go-stock/backend/logger"
+	"mcp-go-stock/backend/logger"
 	"regexp"
 	"strings"
 )

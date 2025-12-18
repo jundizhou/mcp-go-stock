@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"jd-go-stock/backend/logger"
+	"mcp-go-stock/backend/logger"
 	"sync"
 	"time"
 

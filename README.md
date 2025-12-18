@@ -1,4 +1,4 @@
-# jd-go-stock MCP Server
+# mcp-go-stock MCP Server
 
 基于 go-stock 项目的 MCP (Model Context Protocol) Server，提供股票分析相关的 AI 工具能力。
 
@@ -17,13 +17,13 @@
 
 ```bash
 # 进入目录
-cd jd-go-stock
+cd mcp-go-stock
 
 # 下载依赖
 go mod tidy
 
 # 编译
-go build -o jd-go-stock
+go build -o mcp-go-stock
 ```
 
 ## 使用方式
@@ -31,19 +31,19 @@ go build -o jd-go-stock
 ### 本地 stdio 模式
 
 ```bash
-./jd-go-stock
+./mcp-go-stock
 ```
 
 ### SSE 模式（远程部署）
 
 ```bash
-./jd-go-stock --mode=sse --port=3000
+./mcp-go-stock --mode=sse --port=3000
 ```
 
 ### HTTP Stream 模式（远程部署）
 
 ```bash
-./jd-go-stock --mode=http --port=3000
+./mcp-go-stock --mode=http --port=3000
 ```
 
 ## 客户端配置
@@ -55,8 +55,8 @@ go build -o jd-go-stock
 ```json
 {
   "mcpServers": {
-    "jd-go-stock": {
-      "command": "/path/to/jd-go-stock"
+    "mcp-go-stock": {
+      "command": "/path/to/mcp-go-stock"
     }
   }
 }
@@ -67,7 +67,7 @@ go build -o jd-go-stock
 ```json
 {
   "mcpServers": {
-    "jd-go-stock": {
+    "mcp-go-stock": {
       "type": "sse",
       "url": "http://your-server.com:3000"
     }
@@ -80,7 +80,7 @@ go build -o jd-go-stock
 ```json
 {
   "mcpServers": {
-    "jd-go-stock": {
+    "mcp-go-stock": {
       "type": "streamableHttp",
       "url": "http://your-server.com:3000/mcp"
     }
@@ -107,13 +107,13 @@ go build -o jd-go-stock
 
 ```bash
 # 构建镜像
-docker build -t jd-go-stock .
+docker build -t mcp-go-stock .
 
 # 运行 SSE 模式
-docker run -p 3000:3000 jd-go-stock
+docker run -p 3000:3000 mcp-go-stock
 
 # 运行 HTTP 模式
-docker run -p 3000:3000 jd-go-stock ./jd-go-stock --mode=http --port=3000
+docker run -p 3000:3000 mcp-go-stock ./mcp-go-stock --mode=http --port=3000
 ```
 
 ## 示例使用

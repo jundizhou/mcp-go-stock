@@ -1,7 +1,7 @@
 package data
 
 import (
-	"jd-go-stock/backend/db"
+	"mcp-go-stock/backend/db"
 	"gorm.io/gorm"
 )
 
