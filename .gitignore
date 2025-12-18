@@ -1,0 +1,42 @@
+# Binaries
+jd-go-stock
+jd-go-stock-linux
+init_db
+init_db-linux
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Database and data
+data/stock.db
+*.db
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+
+# Duplicate JSON (keep in backend/data/)
+stock_basic.json
+!/backend/data/stock_basic.json
