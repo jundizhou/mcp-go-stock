@@ -5,7 +5,7 @@
 set -e
 
 # 配置
-SERVER_HOST="root@122.51.133.114"
+SERVER_HOST=""
 SERVER_PATH="/opt/jd-go-stock"
 LOCAL_PATH="$(cd "$(dirname "$0")" && pwd)"
 
@@ -73,14 +73,13 @@ echo "=========================================="
 echo "✅ 部署完成!"
 echo "=========================================="
 echo ""
-echo "服务地址: http://122.51.133.114:3000/mcp"
 echo ""
 echo "MCP 客户端配置:"
 echo '{'
 echo '  "mcpServers": {'
 echo '    "jd-go-stock": {'
 echo '      "type": "streamableHttp",'
-echo '      "url": "http://122.51.133.114:3000/mcp"'
+echo '      "url": "http://xxx.xxx.xxx.xxx:3000/mcp"'
 echo '    }'
 echo '  }'
 echo '}'
