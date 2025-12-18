@@ -1,6 +1,6 @@
 # mcp-go-stock MCP Server
 
-基于 go-stock 项目的 MCP (Model Context Protocol) Server，提供股票分析相关的 AI 工具能力。
+基于 [go-stock](https://github.com/ArvinLovegood/go-stock) 项目的 MCP (Model Context Protocol) Server，提供股票分析相关的 AI 工具能力。
 
 ## 功能特性
 
