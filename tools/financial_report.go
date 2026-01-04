@@ -18,7 +18,7 @@ func HandleGetFinancialReport(ctx context.Context, request mcp.CallToolRequest) 
 
 	stockCode = GetStockCode(stockCode)
 
-	messages := data.GetFinancialReportsByXUEQIU(stockCode, 30)
+	messages := data.GetFinancialReportsByXUEQIU(ctx, stockCode, 30)
 	if messages == nil || len(*messages) == 0 {
 		return mcp.NewToolResultText("没有找到 " + stockCode + " 的财务报告"), nil
 	}

@@ -83,25 +83,51 @@ func (pool *BrowserPool) Put(ctx *context.Context) {
 		chromedp.Cancel(*ctx)
 		return
 	}
-	chromedp.Cancel(*ctx)
+	// 不在此处 Cancel，否则放回池中的实例将无法再次使用
 	pool.pool <- ctx
 }
 
 // Close 关闭池中的所有浏览器实例
 func (pool *BrowserPool) Close() {
-	close(pool.pool)
-	for ctx := range pool.pool {
-		chromedp.Cancel(*ctx)
+	pool.mu.Lock()
+	defer pool.mu.Unlock()
+
+	// 这里不再关闭 channel，因为可能有 Put 还在进行
+	// 我们直接从 channel 中取出并 Cancel
+	for {
+		select {
+		case ctx, ok := <-pool.pool:
+			if !ok {
+				return
+			}
+			chromedp.Cancel(*ctx)
+		default:
+			return
+		}
 	}
 }
 
 // FetchPage 使用浏览器池获取页面内容
-func (pool *BrowserPool) FetchPage(url, waitVisible string) (string, error) {
+func (pool *BrowserPool) FetchPage(ctx context.Context, url, waitVisible string) (string, error) {
 	// 从池中获取浏览器实例
-	ctx := pool.Get()
-	defer pool.Put(ctx) // 使用完毕后放回池中
+	pctx := pool.Get()
+	defer pool.Put(pctx) // 使用完毕后放回池中
+
+	// 从池中 context 创建一个子 context，并关联传入的 ctx
+	runCtx, cancel := chromedp.NewContext(*pctx)
+	defer cancel()
+
+	// 监听传入的 ctx 的取消信号
+	go func() {
+		select {
+		case <-ctx.Done():
+			cancel()
+		case <-runCtx.Done():
+		}
+	}()
+
 	var htmlContent string
-	err := chromedp.Run(*ctx,
+	err := chromedp.Run(runCtx,
 		chromedp.Navigate(url),
 		chromedp.WaitVisible(waitVisible, chromedp.ByQuery), // 确保  元素可见
 		chromedp.WaitReady(waitVisible, chromedp.ByQuery),   // 确保  元素准备好

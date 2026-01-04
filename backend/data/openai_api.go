@@ -729,7 +729,7 @@ func (o *OpenAi) NewChatStream(stock, stockCode, userQuestion string, sysPromptI
 			if checkIsIndexBasic(stock) {
 				return
 			}
-			messages := GetFinancialReportsByXUEQIU(stockCode, o.CrawlTimeOut)
+			messages := GetFinancialReportsByXUEQIU(context.Background(), stockCode, o.CrawlTimeOut)
 			if messages == nil || len(*messages) == 0 {
 				logger.SugaredLogger.Error("获取股票财报失败")
 				// "***❗获取股票财报失败,分析结果可能不准确***<hr>"
@@ -1682,9 +1682,9 @@ func checkIsIndexBasic(stock string) bool {
 	return count > 0
 }
 
-func SearchGuShiTongStockInfo(stock string, crawlTimeOut int64) *[]string {
+func SearchGuShiTongStockInfo(ctx context.Context, stock string, crawlTimeOut int64) *[]string {
 	crawlerAPI := CrawlerApi{}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(crawlTimeOut)*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(crawlTimeOut)*time.Second)
 	defer cancel()
 
 	crawlerAPI = crawlerAPI.NewCrawler(ctx, CrawlerBaseInfo{
@@ -1692,6 +1692,7 @@ func SearchGuShiTongStockInfo(stock string, crawlTimeOut int64) *[]string {
 		BaseUrl: "https://gushitong.baidu.com",
 		Headers: map[string]string{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0"},
 	})
+	defer crawlerAPI.pool.Close()
 	url := "https://gushitong.baidu.com/stock/ab-" + RemoveAllNonDigitChar(stock)
 
 	if strutil.HasPrefixAny(stock, []string{"HK", "hk"}) {
@@ -1731,7 +1732,7 @@ func SearchGuShiTongStockInfo(stock string, crawlTimeOut int64) *[]string {
 	}
 	return &messages
 }
-func GetFinancialReportsByXUEQIU(stockCode string, crawlTimeOut int64) *[]string {
+func GetFinancialReportsByXUEQIU(ctx context.Context, stockCode string, crawlTimeOut int64) *[]string {
 	if strutil.HasPrefixAny(stockCode, []string{"HK", "hk"}) {
 		stockCode = strings.ReplaceAll(stockCode, "hk", "")
 		stockCode = strings.ReplaceAll(stockCode, "HK", "")
@@ -1749,15 +1750,16 @@ func GetFinancialReportsByXUEQIU(stockCode string, crawlTimeOut int64) *[]string
 		BaseUrl:     "https://xueqiu.com",
 		Headers:     map[string]string{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0"},
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(crawlTimeOut)*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(crawlTimeOut)*time.Second)
 	defer cancel()
 	crawlerAPI = crawlerAPI.NewCrawler(ctx, crawlerBaseInfo)
+	defer crawlerAPI.pool.Close()
 
 	var markdown strings.Builder
 	markdown.WriteString("\n## 财务数据：\n")
 	html, ok := crawlerAPI.GetHtml(url, waitVisible, true)
 	if !ok {
-		return &[]string{""}
+		return nil
 	}
 	document, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
@@ -1766,7 +1768,7 @@ func GetFinancialReportsByXUEQIU(stockCode string, crawlTimeOut int64) *[]string
 	GetTableMarkdown(document, waitVisible, &markdown)
 	return &[]string{markdown.String()}
 }
-func GetFinancialReports(stockCode string, crawlTimeOut int64) *[]string {
+func GetFinancialReports(ctx context.Context, stockCode string, crawlTimeOut int64) *[]string {
 	url := "https://emweb.securities.eastmoney.com/pc_hsf10/pages/index.html?type=web&code=" + stockCode + "#/cwfx"
 	waitVisible := "div.report_table table"
 	if strutil.HasPrefixAny(stockCode, []string{"HK", "hk"}) {
@@ -1792,15 +1794,16 @@ func GetFinancialReports(stockCode string, crawlTimeOut int64) *[]string {
 		BaseUrl:     "https://emweb.securities.eastmoney.com",
 		Headers:     map[string]string{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0"},
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(crawlTimeOut)*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(crawlTimeOut)*time.Second)
 	defer cancel()
 	crawlerAPI = crawlerAPI.NewCrawler(ctx, crawlerBaseInfo)
+	defer crawlerAPI.pool.Close()
 
 	var markdown strings.Builder
 	markdown.WriteString("\n## 财务数据：\n")
 	html, ok := crawlerAPI.GetHtml(url, waitVisible, true)
 	if !ok {
-		return &[]string{""}
+		return nil
 	}
 	document, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {

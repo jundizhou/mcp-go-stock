@@ -2,9 +2,10 @@ package data
 
 import (
 	"context"
-	"github.com/chromedp/chromedp"
 	"mcp-go-stock/backend/logger"
 	"time"
+
+	"github.com/chromedp/chromedp"
 )
 
 // @Author spark
@@ -31,7 +32,7 @@ func (c *CrawlerApi) NewCrawler(ctx context.Context, crawlerBaseInfo CrawlerBase
 	}
 }
 func (c *CrawlerApi) GetHtml(url, waitVisible string, headless bool) (string, bool) {
-	page, err := c.pool.FetchPage(url, waitVisible)
+	page, err := c.pool.FetchPage(c.crawlerCtx, url, waitVisible)
 	if err != nil {
 		return "", false
 	}
